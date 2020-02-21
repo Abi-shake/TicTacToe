@@ -1,0 +1,268 @@
+<head>
+    <script  src="http://code.jquery.com/jquery-1.9.1.min.js" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js"></script>
+</head>
+<h1 id="<%= player1name %>"><%= player1name %> has selected <%= player1sign %></h1>
+<h1 id="<%= player2name %>"><%= player2name %> has selected <%= player2sign %></h1>
+<h2 id="currentTurn"></h2>
+<p id="player1" hidden><%= player1sign %></p>
+<p id="player2" hidden><%= player2sign %></p>
+</div>
+<div class="grid-container">
+<div class="grid-item" id="grid-item1"></div>
+<div class="grid-item" id="grid-item2"></div>
+<div class="grid-item" id="grid-item3"></div>  
+<div class="grid-item" id="grid-item4"></div>
+<div class="grid-item" id="grid-item5"></div>
+<div class="grid-item" id="grid-item6"></div>  
+<div class="grid-item" id="grid-item7"></div>
+<div class="grid-item" id="grid-item8"></div>
+<div class="grid-item" id="grid-item9"></i></div>  
+</div>
+</div>
+<button style="color: black;" onclick="restart()">Leave Game</button>
+<div id="overlay">
+<p id="gameEnd"></p>
+<button onclick="restart()">Restart</button>
+</div>
+<style>
+
+    body{
+        background: white;
+
+    }
+
+
+
+    @-webkit-keyframes wawes {
+    from {
+      -webkit-transform: rotate(0);
+    }
+    to {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+  @-moz-keyframes wawes {
+    from {
+      -moz-transform: rotate(0);
+    }
+    to {
+      -moz-transform: rotate(360deg);
+    }
+  }
+  @keyframes wawes {
+    from {
+      -webkit-transform: rotate(0);
+      -moz-transform: rotate(0);
+      -ms-transform: rotate(0);
+      -o-transform: rotate(0);
+      transform: rotate(0);
+    }
+    to {
+      -webkit-transform: rotate(360deg);
+      -moz-transform: rotate(360deg);
+      -ms-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+
+    #overlay {
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.8);
+  z-index: 2;
+  cursor: pointer;
+}
+    h1,h2{
+        text-align: center;
+        color: black;
+    }
+
+    .grid-container {
+        height: 500px;
+    display: grid;
+    margin-top: 7%;
+    grid-template-columns: repeat(3, 134px);
+    grid-template-rows: repeat(4, 130px);
+    justify-content: center;
+    }
+
+    .grid-item {
+    background-color: #78bec5;
+    color: black;
+    padding: 20px;
+    border-radius: 33px;
+    margin: 4px;
+    box-shadow: 2px 2px 4px #3d4250;
+    font-size: 90px;
+    text-align: center;
+    justify-content: center;
+    }
+
+    .grid-item:hover {
+    background-color: #3d4250;
+    box-shadow: 2px 2px 4px #000000;
+  }
+
+    button{
+    background-color: rgba(0,0,0,-2.1);
+			color: white;
+			border:0;
+			border-radius: 15px;
+			display: block;
+			margin: 0px auto; 
+			padding: 0px 45px;
+			width: 60%;
+            font-family: sans-serif;
+			font-size: 70px;
+			font-weight: bold;
+			cursor: pointer;
+			opacity: 1;
+			visibility: visible;
+			-webkit-transition: all .3s ease;
+  }
+  button:hover{
+    transition: all .3s ease;
+	background-color: rgba(0,0,0,0.8);
+  }
+
+  #gameEnd{
+      color: white;
+      font-size: 50px;
+      text-align: center;
+      font-weight: bold;
+      opacity: 1;
+      font-family: sans-serif;
+      margin: 187px;
+  }
+
+    </style>
+    
+
+<script>
+
+function on() {
+  document.getElementById("overlay").style.display = "block";
+}
+function restart() {
+    window.location.href = "/";
+}
+        const player1choice = document.getElementById('player1').innerText;
+        const player2choice = document.getElementById('player2').innerText;
+        const player1Name = document.getElementsByTagName('h1').item(0).id;
+        const player2Name = document.getElementsByTagName('h1').item(1).id;
+        
+        console.log(`player1 name is ${player1}`);
+        let playerChoices = [player1choice,player2choice];
+        let playerNames = [player1Name,player2Name];
+        let totalMoves = 0;
+        let currentChoice = player1choice;
+        let currentPlayerTurn = player1Name;
+        console.log(`array: ${playerChoices}`);
+        console.log( `upper part ${currentChoice}` );  
+        
+        let temp = document.getElementsByClassName("grid-item");
+        for( let i = 0;i< temp.length; i++  ){
+        temp[i].addEventListener("click", function(){
+
+
+        //$('.grid-item').click( function() {
+        const gridId = this.id;
+        totalMoves++;
+
+        if(currentChoice === 'X'){
+        document.getElementById(gridId).innerHTML = '<i class="fa fa-times" aria-hidden="true"></i>';
+        document.getElementById(gridId).innerText = currentChoice;
+        document.getElementById(gridId).style.backgroundColor = '#F96A51';
+        document.getElementById(gridId).style.color = 'white';
+
+        checkWinner(player1Name, currentChoice);
+    }
+
+    if(currentChoice === 'O'){
+        document.getElementById(gridId).innerHTML = '<i class="fa fa-times" aria-hidden="true"></i>';
+        document.getElementById(gridId).innerText = currentChoice;
+        document.getElementById(gridId).style.backgroundColor = '#ecaf4f';
+        document.getElementById(gridId).style.color = 'white';
+
+        checkWinner(player2Name, currentChoice);
+    }
+        
+        playerChoices.reverse();
+        currentChoice = playerChoices[0];
+
+        playerNames.reverse();
+        currentPlayerTurn = playerNames[0];
+        
+        console.log(`reversed: ${playerChoices}`);
+        console.log( `down below ${currentChoice}` );    
+
+        document.getElementById("currentTurn").innerText = `Next Turn : ${currentPlayerTurn}`;
+
+        function checkWinner(currentPlayer, currentChoice){
+            let boolWin = false;
+
+        //checking if the grids contain i class
+        const grid1 = document.getElementById('grid-item1').innerText;
+        const grid2 = document.getElementById('grid-item2').innerText;
+        const grid3 = document.getElementById('grid-item3').innerText;
+        const grid4 = document.getElementById('grid-item4').innerText;
+        const grid5 = document.getElementById('grid-item5').innerText;
+        const grid6 = document.getElementById('grid-item6').innerText;
+        const grid7 = document.getElementById('grid-item7').innerText;
+        const grid8 = document.getElementById('grid-item8').innerText;
+        const grid9 = document.getElementById('grid-item9').innerText;
+
+
+        if( grid1 === currentChoice && grid5 === currentChoice && grid9 === currentChoice ){
+            boolWin = true;
+        }
+        else if( grid3 === currentChoice && grid5 === currentChoice && grid7 === currentChoice ){
+            boolWin = true;
+        }
+        else if( grid1 === currentChoice && grid2 === currentChoice && grid3 === currentChoice ){
+            boolWin = true;
+        }
+        else if( grid4 === currentChoice && grid5 === currentChoice && grid6 === currentChoice ){
+            boolWin = true;
+        }
+        else if( grid7 === currentChoice && grid8 === currentChoice && grid9 === currentChoice ){
+            boolWin = true;
+        }
+        else if( grid1 === currentChoice && grid4 === currentChoice && grid7 === currentChoice ){
+            boolWin = true;
+        }
+        else if( grid2 === currentChoice && grid5 === currentChoice && grid8 === currentChoice ){
+            boolWin = true;
+        }
+        else if( grid3 === currentChoice && grid6 === currentChoice && grid9 === currentChoice ){
+            boolWin = true;
+        }
+
+        if( boolWin == true ){
+            //setTimeout(function(){alert(`${currentPlayer} Won, Game Over!`);} , 100);  
+            //setTimeout(function(){window.location.href = "/";} , 1000);   
+            document.getElementById('gameEnd').innerText = `${currentPlayer} Won, Game Over!`;
+            setTimeout(function(){on();} , 100);  
+
+        }else if(totalMoves == 9 && boolWin == false){
+            //setTimeout(function(){alert(`ame Tie! GPlease Start a new game`);} , 100);  
+            //setTimeout(function(){window.location.href = "/";} , 1000);   
+            document.getElementById('gameEnd').innerText = `Tie, Please start a new game!`;
+            setTimeout(function(){on();} , 100);  
+        }
+         
+         }
+        
+
+
+    } );
+}
+</script>
